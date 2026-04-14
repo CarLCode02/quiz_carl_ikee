@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'homepage/landingpage.dart';
 
 const Color kGold = Color(0xFFE7AB38);
 const Color kGreen = Color(0xFF3D925F);
@@ -66,8 +67,14 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _login,
-                style: ElevatedButton.styleFrom(
+                  onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Landingpage()),
+                      );
+                    },
+                  style: ElevatedButton.styleFrom(
                   backgroundColor: kGold,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
@@ -75,6 +82,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: const Text('Login',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+
+                    
               ),
             ),
             const SizedBox(height: 8),
