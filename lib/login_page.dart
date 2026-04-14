@@ -32,7 +32,7 @@ Widget _buildLogo() {
                 offset: const Offset(0, 8)),
           ],
         ),
-        child: const Icon(Icons.quiz_rounded, size: 48, color: kGold),
+        child:  Image.asset('assets/BRGHGMC.png'),
       ),
       const SizedBox(height: 12),
       const Text('Quiz',
