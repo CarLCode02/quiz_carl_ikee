@@ -18,15 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final _username = TextEditingController();
   final _password = TextEditingController();
 
-  void _login() {
-    if (_username.text == 'admin' && _password.text == 'password123') {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Login successful!')));
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Wrong credentials')));
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
