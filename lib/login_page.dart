@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizcarl_ikee/homepage/landingpage.dart';
 
 const Color kGold = Color(0xFFE7AB38);
 const Color kGreen = Color(0xFF3D925F);
@@ -84,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Text("Don't have an account? "),
                 GestureDetector(
                   onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const RegisterPage())),
+                      MaterialPageRoute(builder: (_) => const Landingpage())),
                   child: const Text('Register',
                       style: TextStyle(color: kGreen, fontWeight: FontWeight.bold)),
                 ),
