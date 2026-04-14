@@ -35,9 +35,9 @@ Widget _buildLogo() {
         child: const Icon(Icons.quiz_rounded, size: 48, color: kGold),
       ),
       const SizedBox(height: 12),
-      const Text('Quiz App',
+      const Text('Quiz',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Colors.white)),
-      const Text('Test your knowledge',
+      const Text('Test your lol',
           style: TextStyle(fontSize: 13, color: Colors.white70)),
     ],
   );
@@ -67,15 +67,7 @@ class _LoginPageState extends State<LoginPage> {
   final _username = TextEditingController();
   final _password = TextEditingController();
 
-  void _login() {
-    if (_username.text == 'admin' && _password.text == 'password123') {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Login successful!')));
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Wrong credentials')));
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const Text('Create account ✨',
+                        const Text('Create account ol',
                             style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
