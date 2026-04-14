@@ -25,10 +25,11 @@ class _LandingpageState extends State<Landingpage> {
                 child: Row(
                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: const [
-                    Text('Text1'),
-                    Text('Text2'), 
-                    Text('Text3'), 
-                    Text('Text4'),  
+                    Text('Text 1'),
+                    Text('Text 2'), 
+                    Text('Text 3'), 
+                    Text('Text 4'),  
+                    Text('Text 5'),  
                   ],
                 ),
               ),
