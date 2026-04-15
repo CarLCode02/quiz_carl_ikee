@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:quizcarl_ikee/login_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Landingpage extends StatefulWidget {
   const Landingpage({super.key});
@@ -11,7 +14,10 @@ class _LandingpageState extends State<Landingpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 244, 244, 244),
      body:Column(
+      
+
       children: [
         Container(
           padding: const EdgeInsets.all(5 ),
@@ -31,19 +37,32 @@ class _LandingpageState extends State<Landingpage> {
                     SizedBox(height: 30 ),
                     Container(
                       margin: EdgeInsets.all(30),
-                      child: Text('GreenCross', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), 
+                      //child: Text('GreenCross', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), 
+                       child: InkWell(
+                        onTap: () => launchUrl(Uri.parse('https://www.greencross.com.ph/')),
+                        child: Text('GreenCross', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 0, 0)),),
+                      ), 
                     ),   
                      Container(
                       margin: EdgeInsets.all(30),
-                      child: Text('Hospital Essentials', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), 
+                     child: InkWell(
+                        onTap: () => launchUrl(Uri.parse('https://example.com/name')),
+                        child: Text('Hospital Essentials', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 0, 0)),),
+                      ), 
                      ),
                       Container(
                         margin: EdgeInsets.all(30),
-                        child: Text('Midterm Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), 
+                        child: InkWell(
+                        onTap: () => launchUrl(Uri.parse('https://www.greencross.com.ph/')),
+                        child: Text('Midterm Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 0, 0)),),
+                      ), 
                       ),
                        Container(
                         margin: EdgeInsets.all(30),
-                        child: Text('Entrance Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), 
+                        child: InkWell(
+                        onTap: () => launchUrl(Uri.parse('https://www.greencross.com.ph/')),
+                        child: Text('Entrance Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 0, 0, 0)),),
+                      ), 
                        ),
                        
                   ],
@@ -105,8 +124,17 @@ class _LandingpageState extends State<Landingpage> {
       child: Column(
         children: [
          SizedBox(height: 60),
-         Text('BRGHGMC\nExamination Portal', style: TextStyle(fontSize: 89, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
-         Text(' Professional Education, Training and Research Unit (PETRU)', style: TextStyle(fontSize: 20  , fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+         Text(
+  'BRGHGMC\nExamination Portal',
+  textAlign: TextAlign.center,
+  style: GoogleFonts.inter(
+    fontSize: 95,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
+        // Text('BRGHGMC\nExamination Portal', style: TextStyle(fontSize: 89, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+         Text(' Professional Education, Training and Research Unit (PETRU)', style: TextStyle(fontSize: 20  , fontWeight: FontWeight.bold,), textAlign: TextAlign.center,),
         ],
 
       ),
