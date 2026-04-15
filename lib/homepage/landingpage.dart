@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:quizcarl_ikee/login_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Landingpage extends StatefulWidget {
   const Landingpage({super.key});
@@ -11,7 +14,10 @@ class _LandingpageState extends State<Landingpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 244, 244, 244),
      body:Column(
+      
+
       children: [
         Container(
           padding: const EdgeInsets.all(5 ),
