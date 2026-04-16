@@ -16,8 +16,7 @@ class _LandingpageState extends State<Landingpage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 244, 244, 244),
      body:Column(
-      
-
+    
       children: [
         Container(
           padding: const EdgeInsets.all(5 ),
@@ -76,7 +75,7 @@ class _LandingpageState extends State<Landingpage> {
 )
                     ), 
                     
-                    Container(
+                   /* Container(
                       margin: EdgeInsets.all(20),
 
                       child: TextButton(
@@ -91,8 +90,12 @@ class _LandingpageState extends State<Landingpage> {
   ),
   child: const Text('Login', style: TextStyle(color: Colors.black)),
 )
-                     
-                    ), 
+                    ),*/
+                    //for icon
+                    Container(
+                      margin: EdgeInsets.all(20),
+                      child: Icon(Icons.account_circle, size: 45,color: const Color.fromARGB(255, 18, 23, 18),),
+                    ),  
            
                   ],
                 ), 
@@ -144,20 +147,21 @@ class _LandingpageState extends State<Landingpage> {
 )
 
                     ), 
+                    //u were a good dream ~~
 
                      Container(
                       margin: EdgeInsets.all(20),
                       child:TextButton(
-  onPressed: () {},
-  style: TextButton.styleFrom(
-    padding: EdgeInsets.all(16.0),
-     backgroundColor:Colors.black , 
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.zero,
-    ),
-  ),
-  child: const Text("I'm a Test Administrator", style: TextStyle(color: Colors.white),),
-)
+                         onPressed: () {},
+                         style: TextButton.styleFrom(
+                           padding: EdgeInsets.all(16.0),
+                            backgroundColor:Colors.black , 
+                           shape: const RoundedRectangleBorder(
+                             borderRadius: BorderRadius.zero,
+                           ),
+                         ),
+                         child: const Text("I'm a Test Administrator", style: TextStyle(color: Colors.white),),
+                       )
 
                     ), 
         ],
