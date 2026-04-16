@@ -61,6 +61,24 @@ class _LandingpageState extends State<Landingpage> {
                   children: [
                     Container(
                      // margin: EdgeInsets.all(12),
+                      
+
+ child:TextButton(
+  onPressed: () {},
+  style: TextButton.styleFrom(
+    padding: EdgeInsets.all(16.0),
+     backgroundColor:Colors.black , 
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.zero,
+    ),
+  ),
+  child: const Text('Register', style: TextStyle(color: Colors.white),),
+)
+                    ), 
+                    
+                    Container(
+                      margin: EdgeInsets.all(20),
+
                       child: TextButton(
   onPressed: () {},
   style: TextButton.styleFrom(
@@ -73,21 +91,7 @@ class _LandingpageState extends State<Landingpage> {
   ),
   child: const Text('Login', style: TextStyle(color: Colors.black)),
 )
-                    ), 
-                    
-                    Container(
-                      margin: EdgeInsets.all(20),
-                      child:TextButton(
-  onPressed: () {},
-  style: TextButton.styleFrom(
-    padding: EdgeInsets.all(16.0),
-     backgroundColor:Colors.black , 
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.zero,
-    ),
-  ),
-  child: const Text('Register', style: TextStyle(color: Colors.white),),
-)
+                     
                     ), 
            
                   ],
