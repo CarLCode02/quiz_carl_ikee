@@ -117,8 +117,10 @@ class _LandingpageState extends State<Landingpage> {
       child: Column(
         children: [
          SizedBox(height: 60),
-         Text('BRGHGMC\nExamination Portal', style: TextStyle(fontSize: 89, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
-         Text(' Professional Education, Training and Research Unit (PETRU)', style: TextStyle(fontSize: 20  , fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+         //Text('BRGHGMC\nExamination Portal', style: TextStyle(fontSize: 90, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+         Text("BRGHGMC\n Examination Portal", style: GoogleFonts.poppins(fontSize: 90, fontWeight: FontWeight.bold), textAlign: TextAlign.center,), 
+         //Text(' Professional Education, Training and Research Unit (PETRU)', style: TextStyle(fontSize: 20  , fontWeight: FontWeight.bold), textAlign: TextAlign.center,),\
+         Text("Professional Education, Training and Research Unit (PETRU)", style: GoogleFonts.inter(fontSize: 20  , fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
         ],
 
       ),
