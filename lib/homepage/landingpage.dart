@@ -181,7 +181,17 @@ class _LandingpageState extends State<Landingpage> {
         ],
       ),
     ),
+    
    ), 
+   SizedBox(height: 120),
+   Divider(
+    color: const Color.fromARGB(255, 55, 53, 53),
+          thickness: 1,
+          indent: 5,
+          endIndent: 8,
+   ), 
+  
+   
       ],
 
 
