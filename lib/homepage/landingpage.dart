@@ -14,18 +14,27 @@ class _LandingpageState extends State<Landingpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 244, 244, 244),
-     body:Column(
-    
-      children: [
+      
+     body:Container(
+decoration: BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [const Color.fromARGB(255, 26, 58, 42),kGreen],
+    ),
+  ),
+      child: Column(
+   
+   
+         children: [
         Container(
           padding: const EdgeInsets.all(5 ),
           child:Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children:[
               Container(
-                margin: EdgeInsets.only(left: 10),
-                child: Image.network('assets/BRGHGMC.png', height: 100,width: 100,),
+                margin: EdgeInsets.only(left: 15),
+                child: Image.network('assets/BRGHGMC.png', height: 95,width: 95,),
               ), 
               Container(
               
@@ -36,19 +45,19 @@ class _LandingpageState extends State<Landingpage> {
                     SizedBox(height: 30 ),
                     Container(
                       margin: EdgeInsets.all(30),
-                      child: Text('GreenCross', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), 
+                      child: Text('GreenCross', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),), 
                     ),   
                      Container(
                       margin: EdgeInsets.all(30),
-                      child: Text('Hospital Essentials', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), 
+                      child: Text('Hospital Essentials', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)), 
                      ),
                       Container(
                         margin: EdgeInsets.all(30),
-                        child: Text('Midterm Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), 
+                        child: Text('Midterm Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)), 
                       ),
                        Container(
                         margin: EdgeInsets.all(30),
-                        child: Text('Entrance Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)), 
+                        child: Text('Entrance Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)), 
                        ),
                        
                   ],
@@ -66,12 +75,12 @@ class _LandingpageState extends State<Landingpage> {
   onPressed: () {},
   style: TextButton.styleFrom(
     padding: EdgeInsets.all(16.0),
-     backgroundColor:Colors.black , 
+     backgroundColor: kGold, 
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.zero,
     ),
   ),
-  child: const Text('Register', style: TextStyle(color: Colors.white),),
+  child: const Text('Register', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.w600),),
 )
                     ), 
                     
@@ -85,6 +94,7 @@ class _LandingpageState extends State<Landingpage> {
     
     side: const BorderSide(color: Colors.black, width: 1.0),
     shape: const RoundedRectangleBorder(
+
       borderRadius: BorderRadius.zero,
     ),
   ),
@@ -94,10 +104,10 @@ class _LandingpageState extends State<Landingpage> {
                     //for icon
                     Container(
                       margin: EdgeInsets.all(20),
-                      child: Icon(Icons.account_circle, size: 45,color: const Color.fromARGB(255, 18, 23, 18),),
-                    ),  
-           
+                      child: Icon(Icons.account_circle, size: 43,color: const Color.fromARGB(255, 255, 236, 236),),
+                    ),           
                   ],
+
                 ), 
               ), 
 
@@ -117,8 +127,8 @@ class _LandingpageState extends State<Landingpage> {
       child: Column(
         children: [
          SizedBox(height: 60),
-         Text("BRGHGMC\n Examination Portal", style: GoogleFonts.poppins(fontSize: 90, fontWeight: FontWeight.bold), textAlign: TextAlign.center,), 
-         Text("Professional Education, Training and Research Unit (PETRU)", style: GoogleFonts.inter(fontSize: 20  , fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+         Text("BRGHGMC\n Examination Portal", style: GoogleFonts.inter(fontSize: 100, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 244, 243, 234)), textAlign: TextAlign.center,), 
+         Text("Professional Education, Training and Research Unit (PETRU)", style: GoogleFonts.inter(fontSize: 20  , fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 244, 243, 234)), textAlign: TextAlign.center,),
         ],
 
       ),
@@ -137,12 +147,12 @@ class _LandingpageState extends State<Landingpage> {
   onPressed: () {},
   style: TextButton.styleFrom(
     padding: EdgeInsets.all(16.0),
-     backgroundColor:Colors.black , 
+     backgroundColor:kGold , 
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.zero,
     ),
   ),
-  child: const Text("I'm a Examinee", style: TextStyle(color: Colors.white),),
+  child: const Text("I'm a Examinee", style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.w600),),
 )
 
                     ), 
@@ -154,12 +164,12 @@ class _LandingpageState extends State<Landingpage> {
                          onPressed: () {},
                          style: TextButton.styleFrom(
                            padding: EdgeInsets.all(16.0),
-                            backgroundColor:Colors.black , 
+                            backgroundColor:kGold, 
                            shape: const RoundedRectangleBorder(
                              borderRadius: BorderRadius.zero,
                            ),
                          ),
-                         child: const Text("I'm a Test Administrator", style: TextStyle(color: Colors.white),),
+                         child: const Text("I'm a Test Administrator", style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.w600),),
                        )
 
                     ), 
@@ -169,18 +179,20 @@ class _LandingpageState extends State<Landingpage> {
     
    ), 
    SizedBox(height: 120),
+   /** 
    Divider(
-    color: const Color.fromARGB(255, 55, 53, 53),
+    color: const Color.fromARGB(255, 0, 0, 0),
           thickness: 1,
           indent: 5,
           endIndent: 8,
-   ), 
+   ), */
   
    
       ],
 
-
-
+      )
+      
+     
      ), 
     );
   }
