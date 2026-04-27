@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizcarl_ikee/homepage/landingpage.dart';
+import 'package:quizcarl_ikee/profile_page.dart';
 
 const Color kGold = Color(0xFFE7AB38);
 const Color kGreen = Color(0xFF3D925F);
@@ -207,8 +208,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               child: ElevatedButton(
 
                  style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.green.shade700,
+                          
                           side: BorderSide(color: Colors.green.shade700),
+                          backgroundColor: kGreen,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
                           padding: const EdgeInsets.symmetric(vertical: 12),
@@ -217,12 +219,12 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const Landingpage(),
+                      builder: (context) => const ProfilePage(),
                     ),
                   );
                 },
                 
-                child: const Text('Login '),
+                child: const Text('Login ', style: TextStyle(color: Colors.white),),
               ),
             ),
             const SizedBox(height: 24),
