@@ -64,6 +64,7 @@ flutter:
 
   assets: 
     - assets/BRGHGMC.png
+    - assets/me.png
 
 
   # To add assets to your application, add an assets section, like this:
