@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizcarl_ikee/homepage/landingpage.dart';
-import 'package:quizcarl_ikee/profile_page.dart';
+
 
 const Color kGold = Color(0xFFE7AB38);
 const Color kGreen = Color(0xFF3D925F);
@@ -219,7 +219,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ProfilePage(),
+                      builder: (context) => const Landingpage(),
                     ),
                   );
                 },

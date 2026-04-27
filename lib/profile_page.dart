@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizcarl_ikee/login_page.dart';
 
 const Color kGold = Color(0xFFE7AB38);
 const Color kGreen = Color(0xFF3D925F);
@@ -281,7 +282,14 @@ class _ProfilePageState extends State<ProfilePage>
                           subtitle: 'Sign out of your account',
                           iconColor: Colors.red.shade400,
                           labelColor: Colors.red.shade400,
-                          onTap: () {},
+                          onTap: () {
+                             Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                          },
                           showArrow: false,
                         ),
                       ),
