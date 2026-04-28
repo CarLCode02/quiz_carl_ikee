@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizcarl_ikee/login_page.dart';
 import 'package:quizcarl_ikee/profile_page.dart';
+import 'try.dart'; 
 
 
 
@@ -78,6 +79,9 @@ decoration: BoxDecoration(
 
  child:TextButton(
   onPressed: () {
+     Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => const MyTry()),  
                   );
   },
   style: TextButton.styleFrom(
