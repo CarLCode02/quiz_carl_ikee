@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizcarl_ikee/login_page.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'try.dart'; 
+import 'package:quizcarl_ikee/profile_page.dart';
 
 
+
+const Color kGold = Color(0xFFE7AB38);
+const Color kGreen = Color(0xFF3D925F);
 class Landingpage extends StatefulWidget {
   const Landingpage({super.key});
 
@@ -15,6 +17,7 @@ class Landingpage extends StatefulWidget {
 class _LandingpageState extends State<Landingpage> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       
      body:Container(
@@ -75,10 +78,30 @@ decoration: BoxDecoration(
 
  child:TextButton(
   onPressed: () {
-    Navigator.push(
-      context, 
-      MaterialPageRoute(builder: (context) => const MyTry()),  
-    ); 
+                  );
+  },
+  style: TextButton.styleFrom(
+    padding: EdgeInsets.all(16.0),
+     backgroundColor: kGold, 
+    shape: const RoundedRectangleBorder(
+    ),
+  ),
+  child: const Text('Register', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.w600),),
+)
+                    ), 
+                    Container(
+                      margin: EdgeInsets.all(12),
+                      
+
+ child:TextButton(
+  onPressed: () {
+
+     Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
   },
   style: TextButton.styleFrom(
     padding: EdgeInsets.all(16.0),
@@ -87,32 +110,28 @@ decoration: BoxDecoration(
       borderRadius: BorderRadius.zero,
     ),
   ),
-  child: const Text('Register', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.w600),),
+  child: const Text('Login', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.w600),),
 )
                     ), 
                     
-                   /* Container(
-                      margin: EdgeInsets.all(20),
 
-                      child: TextButton(
-  onPressed: () {},
-  style: TextButton.styleFrom(
-    padding: EdgeInsets.all(16.0),
-    
-    side: const BorderSide(color: Colors.black, width: 1.0),
-    shape: const RoundedRectangleBorder(
-
-      borderRadius: BorderRadius.zero,
-    ),
-  ),
-  child: const Text('Login', style: TextStyle(color: Colors.black)),
-)
-                    ),*/
-                    //for icon
                     Container(
                       margin: EdgeInsets.all(20),
-                      child: Icon(Icons.account_circle, size: 43,color: const Color.fromARGB(255, 255, 236, 236),),
-                    ),           
+                      child: IconButton(
+                      icon: const Icon(Icons.account_circle),
+                      iconSize: 43,
+                      color:  Color.fromARGB(255, 255, 236, 236),
+              onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfilePage(),
+                    ),
+                  );
+                  },
+                  )
+
+                    ),
                   ],
 
                 ), 
