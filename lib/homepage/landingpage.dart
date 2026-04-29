@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quizcarl_ikee/about_page.dart';
 import 'package:quizcarl_ikee/login_page.dart';
 import 'package:quizcarl_ikee/profile_page.dart';
 
@@ -60,10 +61,27 @@ decoration: BoxDecoration(
                         margin: EdgeInsets.all(30),
                         child: Text('Midterm Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)), 
                       ),
-                       Container(
-                        margin: EdgeInsets.all(30),
-                        child: Text('Entrance Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)), 
-                       ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(30), 
+                      ),
+                    onPressed: () {
+                      Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AboutPage(),
+                    ),
+                  );
+                    },
+                      child: const Text(
+                        'About',
+                      style: TextStyle(
+                      fontSize: 16, 
+                      fontWeight: FontWeight.bold, 
+                      color: Colors.white,
+                        ),
+                      ),
+                    ),
                        
                   ],
                 ),
