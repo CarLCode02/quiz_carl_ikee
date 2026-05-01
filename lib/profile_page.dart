@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizcarl_ikee/login_page.dart';
+import 'package:quizcarl_ikee/quiz_list_page.dart';
+import 'about_page.dart';
 
 const Color kGold = Color(0xFFE7AB38);
 const Color kGreen = Color(0xFF3D925F);
@@ -24,10 +26,12 @@ class _ProfilePageState extends State<ProfilePage>
     super.initState();
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 700));
-    _fadeAnim = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
-    _slideAnim = Tween<Offset>(
-            begin: const Offset(0, 0.12), end: Offset.zero)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _fadeAnim =
+        CurvedAnimation(parent: _controller, curve: Curves.easeOut);
+    _slideAnim =
+        Tween<Offset>(begin: const Offset(0, 0.12), end: Offset.zero)
+            .animate(CurvedAnimation(
+                parent: _controller, curve: Curves.easeOut));
     _controller.forward();
   }
 
@@ -39,11 +43,27 @@ class _ProfilePageState extends State<ProfilePage>
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
+    return orientation == Orientation.landscape
+        ? _LandscapeLayout(fadeAnim: _fadeAnim, slideAnim: _slideAnim)
+        : _PortraitLayout(fadeAnim: _fadeAnim, slideAnim: _slideAnim);
+  }
+}
+
+// ── Portrait Layout (original design) ──────────────────────────────────────
+
+class _PortraitLayout extends StatelessWidget {
+  final Animation<double> fadeAnim;
+  final Animation<Offset> slideAnim;
+  const _PortraitLayout(
+      {required this.fadeAnim, required this.slideAnim});
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9),
       body: CustomScrollView(
         slivers: [
-          // ── Gradient App Bar ──────────────────────────────────────────
           SliverAppBar(
             expandedHeight: 260,
             pinned: true,
@@ -52,261 +72,23 @@ class _ProfilePageState extends State<ProfilePage>
             actions: [
               IconButton(
                 icon: const Icon(Icons.edit_outlined, color: Colors.white),
-                onPressed: (
-
-
-                ) {
-
-                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
-                    ),
-                  );
-                  
-                },
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const QuizListPage())),
               ),
               const SizedBox(width: 4),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                fit: StackFit.expand,
-                children: [
-                  // Gradient background
-                  Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [kGreenDark, kGreen, kGreenLight],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                  ),
-                  // Decorative circles
-                  Positioned(
-                    top: -40,
-                    right: -40,
-                    child: Container(
-                      width: 180,
-                      height: 180,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.06),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 20,
-                    left: -30,
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.05),
-                      ),
-                    ),
-                  ),
-                  // Avatar + name
-                  Align(
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(height: 32),
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: kGold, width: 3),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                blurRadius: 16,
-                                offset: const Offset(0, 6),
-                              ),
-                            ],
-                          ),
-                          child: const CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Color(0xFF2A6B43),
-                            backgroundImage: AssetImage('assets/me.png'),
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        const Text(
-                          'Carl Lawrence S. Maranion',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.4,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                            '@Carllawrence',
-                            style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 13,
-                                letterSpacing: 0.3),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              background: _GradientHeader(showFullAvatar: true),
             ),
           ),
-
-          // ── Body ─────────────────────────────────────────────────────
           SliverToBoxAdapter(
             child: FadeTransition(
-              opacity: _fadeAnim,
+              opacity: fadeAnim,
               child: SlideTransition(
-                position: _slideAnim,
+                position: slideAnim,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-                  child: Column(
-                    children: [
-                      // Stats card
-                      _Card(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            _StatItem(label: 'Quizzes', value: '0',
-                                icon: Icons.book),
-                            _VertDivider(),
-                            _StatItem(label: 'Score', value: '0',
-                                icon: Icons.scoreboard),
-                            _VertDivider(),
-                            _StatItem(label: 'Rank', value: '#10',
-                                icon: Icons.leaderboard),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // Level / progress card
-                      _Card(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text('Level Progress',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 15)),
-                                Text('Level 0',
-                                    style: TextStyle(
-                                        color: kGreen,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14)),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // Info card
-                      _Card(
-                        child: Column(
-                          children: const [
-                            _InfoRow(
-                                icon: Icons.email_outlined,
-                                label: 'Email',
-                                value: 'Carl@gmal.com'),
-                            Divider(height: 20, thickness: 0.8),
-                            _InfoRow(
-                                icon: Icons.home,
-                                label: 'Office',
-                                value: 'IT WorkShop2/IMIS'),
-                                Divider(height: 20, thickness: 0.8),
-                                 _InfoRow(
-                                icon: Icons.person_2_rounded,
-                                label: 'Designation',
-                                value: 'IT Dev. Intern'),
-                                Divider(height: 20, thickness: 0.8),
-                            _InfoRow(
-                                icon: Icons.calendar_today_outlined,
-                                label: 'Member since',
-                                value: 'April 2026'),
-                            Divider(height: 20, thickness: 0.8),
-                            _InfoRow(
-                                icon: Icons.location_on_outlined,
-                                label: 'Location',
-                                value: 'Camarines Sur, Philippines'),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // Action buttons card
-                      _Card(
-                        child: Column(
-                          children: [
-                            _MenuTile(
-                              icon: Icons.history_rounded,
-                              label: 'Quiz History',
-                              subtitle: 'View your past quizzes',
-                              onTap: () {},
-                            ),
-                            const Divider(height: 1, thickness: 0.8),
-                            _MenuTile(
-                              icon: Icons.bar_chart_rounded,
-                              label: 'Statistics',
-                              subtitle: 'Detailed performance stats',
-                              onTap: () {},
-                            ),
-                            const Divider(height: 1, thickness: 0.8),
-                            _MenuTile(
-                              icon: Icons.settings_outlined,
-                              label: 'Settings',
-                              subtitle: 'Account & preferences',
-                              onTap: () {},
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // Logout
-                      _Card(
-                        child: _MenuTile(
-                          icon: Icons.logout_rounded,
-                          label: 'Logout',
-                          subtitle: 'Sign out of your account',
-                          iconColor: Colors.red.shade400,
-                          labelColor: Colors.red.shade400,
-                          onTap: () {
-                             Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
-                    ),
-                  );
-                          },
-                          showArrow: false,
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: _ProfileCards(context: context),
                 ),
               ),
             ),
@@ -317,7 +99,536 @@ class _ProfilePageState extends State<ProfilePage>
   }
 }
 
-// ── Reusable widgets ────────────────────────────────────────────────────────
+//Landscape Layout (pang resume style)
+
+class _LandscapeLayout extends StatelessWidget {
+  final Animation<double> fadeAnim;
+  final Animation<Offset> slideAnim;
+  const _LandscapeLayout(
+      {required this.fadeAnim, required this.slideAnim});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF4F6F9),
+      body: FadeTransition(
+        opacity: fadeAnim,
+        child: SlideTransition(
+          position: slideAnim,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              //  Left  (resume sidebar)
+              Container(
+                width: 220,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [kGreenDark, kGreen],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                child: SafeArea(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 24, horizontal: 16),
+                    child: Column(
+                      children: [
+                        // Back button
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: GestureDetector(
+                            onTap: () => Navigator.maybePop(context),
+                            child: const Icon(Icons.arrow_back_ios_new,
+                                color: Colors.white70, size: 18),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        // Avatar
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: kGold, width: 3),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: const CircleAvatar(
+                            radius: 44,
+                            backgroundColor: kGreenDark,
+                            backgroundImage: AssetImage('assets/me.png'),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        const Text(
+                          'Carl Lawrence\nS. Maranion',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Text('@Carllawrence',
+                              style: TextStyle(
+                                  color: Colors.white70, fontSize: 11)),
+                        ),
+                        const SizedBox(height: 20),
+                        const Divider(color: Colors.white24),
+                        const SizedBox(height: 12),
+                        // Contact info
+                        _SidebarInfo(
+                            icon: Icons.email_outlined,
+                            value: 'Carl@gmail.com'),
+                        const SizedBox(height: 10),
+                        _SidebarInfo(
+                            icon: Icons.location_on_outlined,
+                            value: 'Camarines Sur, PH'),
+                        const SizedBox(height: 10),
+                        _SidebarInfo(
+                            icon: Icons.home,
+                            value: 'IT Workshop2 / IMIS'),
+                        const SizedBox(height: 10),
+                        _SidebarInfo(
+                            icon: Icons.calendar_today_outlined,
+                            value: 'Since April 2026'),
+                        const SizedBox(height: 20),
+                        const Divider(color: Colors.white24),
+                        const SizedBox(height: 12),
+                        // Stats
+                        _SidebarStat(label: 'Quizzes', value: '0'),
+                        const SizedBox(height: 8),
+                        _SidebarStat(label: 'Score', value: '0'),
+                        const SizedBox(height: 8),
+                        _SidebarStat(label: 'Rank', value: '#10'),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              // Right (resume body) 
+              Expanded(
+                child: SafeArea(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Header row
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text('Profile',
+                                    style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w800,
+                                        color: kGreenDark)),
+                                Text('IT Dev. Intern',
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.grey)),
+                              ],
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.edit_outlined,
+                                  color: kGreen),
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const LoginPage())),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                            height: 3,
+                            width: 48,
+                            decoration: BoxDecoration(
+                                color: kGold,
+                                borderRadius: BorderRadius.circular(4))),
+                        const SizedBox(height: 20),
+
+                        // Level progress
+                        _Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Text('Level Progress',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14)),
+                                  Text('Level 0',
+                                      style: TextStyle(
+                                          color: kGreen,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13)),
+                                ],
+                              ),
+
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 14),
+
+                        // Menu tiles
+                        _Card(
+                          child: Column(
+                            children: [
+                              _MenuTile(
+                                icon: Icons.history_rounded,
+                                label: 'Quiz History',
+                                subtitle: 'View your past quizzes',
+                                onTap: () {},
+                              ),
+                              const Divider(height: 1, thickness: 0.8),
+                              _MenuTile(
+                                icon: Icons.bar_chart_rounded,
+                                label: 'Statistics',
+                                subtitle: 'Detailed performance stats',
+                                onTap: () {},
+                              ),
+                              const Divider(height: 1, thickness: 0.8),
+                              _MenuTile(
+                                icon: Icons.settings_outlined,
+                                label: 'Settings',
+                                subtitle: 'Account & preferences',
+                                onTap: () {},
+                              ),
+                              const Divider(height: 1, thickness: 0.8),
+                              _MenuTile(
+                                icon: Icons.info_outline_rounded,
+                                label: 'About',
+                                subtitle: 'App info & developer',
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const AboutPage())),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 14),
+
+                        _Card(
+                          child: _MenuTile(
+                            icon: Icons.logout_rounded,
+                            label: 'Logout',
+                            subtitle: 'Sign out of your account',
+                            iconColor: Colors.red.shade400,
+                            labelColor: Colors.red.shade400,
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const LoginPage())),
+                            showArrow: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Shared gradient header widget
+
+class _GradientHeader extends StatelessWidget {
+  final bool showFullAvatar;
+  const _GradientHeader({this.showFullAvatar = true});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [kGreenDark, kGreen, kGreenLight],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        Positioned(
+          top: -40, right: -40,
+          child: Container(
+            width: 180, height: 180,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white.withOpacity(0.06),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 20, left: -30,
+          child: Container(
+            width: 120, height: 120,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white.withOpacity(0.05),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 32),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: kGold, width: 3),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: const CircleAvatar(
+                  radius: 50,
+                  backgroundColor: kGreenDark,
+                  backgroundImage: AssetImage('assets/me.png'),
+                ),
+              ),
+              const SizedBox(height: 14),
+              const Text(
+                'Carl Lawrence S. Maranion',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.4,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Text('@Carllawrence',
+                    style:
+                        TextStyle(color: Colors.white70, fontSize: 13)),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+//  Shared profile cards (portrait body)
+
+class _ProfileCards extends StatelessWidget {
+  final BuildContext context;
+  const _ProfileCards({required this.context});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              _StatItem(label: 'Quizzes', value: '0', icon: Icons.book),
+              _VertDivider(),
+              _StatItem(label: 'Score', value: '0', icon: Icons.scoreboard),
+              _VertDivider(),
+              _StatItem(label: 'Rank', value: '#10', icon: Icons.leaderboard),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        _Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text('Level Progress',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 15)),
+                  Text('Level 0',
+                      style: TextStyle(
+                          color: kGreen,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14)),
+                ],
+              ),
+              const SizedBox(height: 6),
+              
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        const _Card(
+          child: Column(
+            children: [
+              _InfoRow(
+                  icon: Icons.email_outlined,
+                  label: 'Email',
+                  value: 'Carl@gmail.com'),
+              Divider(height: 20, thickness: 0.8),
+              _InfoRow(
+                  icon: Icons.home,
+                  label: 'Office',
+                  value: 'IT Workshop2 / IMIS'),
+              Divider(height: 20, thickness: 0.8),
+              _InfoRow(
+                  icon: Icons.person_2_rounded,
+                  label: 'Designation',
+                  value: 'IT Dev. Intern'),
+              Divider(height: 20, thickness: 0.8),
+              _InfoRow(
+                  icon: Icons.calendar_today_outlined,
+                  label: 'Member since',
+                  value: 'April 2026'),
+              Divider(height: 20, thickness: 0.8),
+              _InfoRow(
+                  icon: Icons.location_on_outlined,
+                  label: 'Location',
+                  value: 'Camarines Sur, Philippines'),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        _Card(
+          child: Column(
+            children: [
+              _MenuTile(
+                icon: Icons.history_rounded,
+                label: 'Quiz History',
+                subtitle: 'View your past quizzes',
+                onTap: () {},
+              ),
+              const Divider(height: 1, thickness: 0.8),
+              _MenuTile(
+                icon: Icons.bar_chart_rounded,
+                label: 'Statistics',
+                subtitle: 'Detailed performance stats',
+                onTap: () {},
+              ),
+              const Divider(height: 1, thickness: 0.8),
+              _MenuTile(
+                icon: Icons.settings_outlined,
+                label: 'Settings',
+                subtitle: 'Account & preferences',
+                onTap: () {},
+              ),
+              const Divider(height: 1, thickness: 0.8),
+              _MenuTile(
+                icon: Icons.info_outline_rounded,
+                label: 'About',
+                subtitle: 'App info & developer',
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const AboutPage())),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        _Card(
+          child: _MenuTile(
+            icon: Icons.logout_rounded,
+            label: 'Logout',
+            subtitle: 'Sign out of your account',
+            iconColor: Colors.red.shade400,
+            labelColor: Colors.red.shade400,
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const LoginPage())),
+            showArrow: false,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+//  Sidebar widgets (landscape only) 
+
+class _SidebarInfo extends StatelessWidget {
+  final IconData icon;
+  final String value;
+  const _SidebarInfo({required this.icon, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.white60, size: 14),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(value,
+              style: const TextStyle(
+                  color: Colors.white70, fontSize: 12, height: 1.4)),
+        ),
+      ],
+    );
+  }
+}
+
+class _SidebarStat extends StatelessWidget {
+  final String label;
+  final String value;
+  const _SidebarStat({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label,
+            style:
+                const TextStyle(color: Colors.white60, fontSize: 12)),
+        Text(value,
+            style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 13)),
+      ],
+    );
+  }
+}
+
+//Shared reusable widgets
 
 class _Card extends StatelessWidget {
   final Widget child;
@@ -375,10 +686,8 @@ class _VertDivider extends StatelessWidget {
   const _VertDivider();
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 48, width: 1, color: Colors.grey.shade200);
-  }
+  Widget build(BuildContext context) =>
+      Container(height: 48, width: 1, color: Colors.grey.shade200);
 }
 
 class _InfoRow extends StatelessWidget {
@@ -405,8 +714,7 @@ class _InfoRow extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(label,
-                style:
-                    const TextStyle(fontSize: 11, color: Colors.grey)),
+                style: const TextStyle(fontSize: 11, color: Colors.grey)),
             const SizedBox(height: 2),
             Text(value,
                 style: const TextStyle(
