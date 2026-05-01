@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:quizcarl_ikee/login_page.dart';
 import 'package:quizcarl_ikee/quiz_list_page.dart';
+import 'homepage/user_settings.dart';
 import 'about_page.dart';
+
+
 
 const Color kGold = Color(0xFFE7AB38);
 const Color kGreen = Color(0xFF3D925F);
@@ -314,7 +317,10 @@ class _LandscapeLayout extends StatelessWidget {
                                 icon: Icons.settings_outlined,
                                 label: 'Settings',
                                 subtitle: 'Account & preferences',
-                                onTap: () {},
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const MyTry())),
                               ),
                               const Divider(height: 1, thickness: 0.8),
                               _MenuTile(
