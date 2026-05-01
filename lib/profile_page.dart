@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizcarl_ikee/login_page.dart';
+import 'homepage/user_settings.dart';
 
 const Color kGold = Color(0xFFE7AB38);
 const Color kGreen = Color(0xFF3D925F);
@@ -100,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage>
                     alignment: Alignment.center,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: [ 
                         const SizedBox(height: 32),
                         Container(
                           decoration: BoxDecoration(
@@ -153,7 +154,6 @@ class _ProfilePageState extends State<ProfilePage>
               ),
             ),
           ),
-
           // ── Body ─────────────────────────────────────────────────────
           SliverToBoxAdapter(
             child: FadeTransition(
@@ -175,12 +175,11 @@ class _ProfilePageState extends State<ProfilePage>
                             _StatItem(label: 'Score', value: 'uno',
                                 icon: Icons.scoreboard),
                             _VertDivider(),
-                            _StatItem(label: 'Rank', value: '#ulol',
+                            _StatItem(label: 'Rank', value: '#1',
                                 icon: Icons.leaderboard),
                           ],
                         ),
                       ),
-
                       const SizedBox(height: 16),
 
                       // Level / progress card
@@ -266,7 +265,9 @@ class _ProfilePageState extends State<ProfilePage>
                               icon: Icons.settings_outlined,
                               label: 'Settings',
                               subtitle: 'Account & preferences',
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const MyTry(),),);
+                              },
                             ),
                           ],
                         ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizcarl_ikee/login_page.dart';
 import 'package:quizcarl_ikee/profile_page.dart';
-import 'try.dart'; 
+import 'user_settings.dart'; 
 
 
 
@@ -65,7 +65,6 @@ decoration: BoxDecoration(
                         margin: EdgeInsets.all(30),
                         child: Text('Entrance Exam', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)), 
                        ),
-                       
                   ],
                 ),
               ),
