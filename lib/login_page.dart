@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           ),
         ),
         const SizedBox(height: 14),
-        const Text('Quiz App',
+        const Text('BRGHGMC Examination Portal',
             style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.w800,

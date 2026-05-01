@@ -53,7 +53,19 @@ class _ProfilePageState extends State<ProfilePage>
             actions: [
               IconButton(
                 icon: const Icon(Icons.edit_outlined, color: Colors.white),
-                onPressed: () {},
+                onPressed: (
+
+
+                ) {
+
+                   Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                  
+                },
               ),
               const SizedBox(width: 4),
             ],
@@ -172,10 +184,10 @@ class _ProfilePageState extends State<ProfilePage>
                             _StatItem(label: 'Quizzes', value: '0',
                                 icon: Icons.book),
                             _VertDivider(),
-                            _StatItem(label: 'Score', value: 'uno',
+                            _StatItem(label: 'Score', value: '0',
                                 icon: Icons.scoreboard),
                             _VertDivider(),
-                            _StatItem(label: 'Rank', value: '#1',
+                            _StatItem(label: 'Rank', value: '#10',
                                 icon: Icons.leaderboard),
                           ],
                         ),
@@ -194,7 +206,7 @@ class _ProfilePageState extends State<ProfilePage>
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15)),
-                                Text('Level mo',
+                                Text('Level 0',
                                     style: TextStyle(
                                         color: kGreen,
                                         fontWeight: FontWeight.bold,
