@@ -557,7 +557,10 @@ class _ProfileCards extends StatelessWidget {
                 icon: Icons.settings_outlined,
                 label: 'Settings',
                 subtitle: 'Account & preferences',
-                onTap: () {},
+                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const MyTry())),
               ),
               const Divider(height: 1, thickness: 0.8),
               _MenuTile(
