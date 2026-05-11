@@ -11,7 +11,6 @@ class AboutPage extends StatefulWidget {
   @override
   State<AboutPage> createState() => _AboutPageState();
 }
-
 class _AboutPageState extends State<AboutPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _ctrl;
