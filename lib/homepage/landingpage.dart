@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizcarl_ikee/login_page.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'SuperAdmin/'; 
 
 class Landingpage extends StatefulWidget {
   const Landingpage({super.key});
@@ -72,7 +73,14 @@ decoration: BoxDecoration(
                       
 
  child:TextButton(
-  onPressed: () {},
+  onPressed: () {
+    onpressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SuperAdmin()),
+      );
+    };
+  },
   style: TextButton.styleFrom(
     padding: EdgeInsets.all(16.0),
      backgroundColor: kGold, 
