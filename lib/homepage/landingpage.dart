@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizcarl_ikee/login_page.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'SuperAdmin/'; 
+import 'package:quizcarl_ikee/SuperAdmin/super_admin.dart';
+
+const Color kGreen = Color.fromARGB(255, 76, 175, 80);
+const Color kGold = Color.fromARGB(255, 255, 193, 7);
 
 class Landingpage extends StatefulWidget {
   const Landingpage({super.key});
@@ -35,7 +38,7 @@ decoration: BoxDecoration(
             children:[
               Container(
                 margin: EdgeInsets.only(left: 15),
-                child: Image.network('assets/BRGHGMC.png', height: 95,width: 95,),
+                child: Image.asset('assets/BRGHGMC.png', height: 95, width: 95),
               ), 
               Container(
               
@@ -69,27 +72,22 @@ decoration: BoxDecoration(
                 child: Row(
                   children: [
                     Container(
-                     // margin: EdgeInsets.all(12),
-                      
-
- child:TextButton(
-  onPressed: () {
-    onpressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const SuperAdmin()),
-      );
-    };
-  },
-  style: TextButton.styleFrom(
-    padding: EdgeInsets.all(16.0),
-     backgroundColor: kGold, 
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.zero,
-    ),
-  ),
-  child: const Text('Register', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.w600),),
-)
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                             context,
+                            MaterialPageRoute(builder: (context) => const SuperAdmin()),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.all(16.0),
+                          backgroundColor: kGold, 
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                        ),
+                        child: const Text('Register', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.w600),),
+                      )
                     ), 
                     
                    /* Container(
