@@ -11,6 +11,8 @@ class SuperAdmin extends StatefulWidget {
 
 class _SuperAdminState extends State<SuperAdmin> {
   int _selectedIndex = 0;
+  bool notificationsEnabled = true;
+  bool maintenanceMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +72,8 @@ class _SuperAdminState extends State<SuperAdmin> {
       return _buildUsersManagement();
     } else if (index == 2) {
       return _buildOfficeManagement();
+    } else if (index == 3) {
+      return _buildSettings();
     }
     return Center(
       child: Text(
@@ -163,7 +167,9 @@ class _SuperAdminState extends State<SuperAdmin> {
                 ),
               ),
               ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  _showAddUserModal();
+                },
                 icon: const Icon(Icons.add),
                 label: const Text('Add User'),
                 style: ElevatedButton.styleFrom(
@@ -197,15 +203,22 @@ class _SuperAdminState extends State<SuperAdmin> {
                     DataColumn(label: Text('Name')),
                     DataColumn(label: Text('Email')),
                     DataColumn(label: Text('Role')),
+                    DataColumn(label: Text('Office')),
                     DataColumn(label: Text('Status')),
                     DataColumn(label: Text('Actions')),
                   ],
                   rows: [
-                    _buildUserTableRow('001', 'John Doe', 'john@example.com', 'Admin', 'Active'),
-                    _buildUserTableRow('002', 'Jane Smith', 'jane@example.com', 'Examiner', 'Active'),
-                    _buildUserTableRow('003', 'Mike Johnson', 'mike@example.com', 'User', 'Inactive'),
-                    _buildUserTableRow('004', 'Sarah Williams', 'sarah@example.com', 'Examiner', 'Active'),
-                    _buildUserTableRow('005', 'Robert Brown', 'robert@example.com', 'User', 'Active'),
+
+                  _buildUserTableRow('001', 'John Doe', 'john@example.com', 'Examiner', 'Sanitary', 'Active'),
+_buildUserTableRow('002', 'Jane Smith', 'jane@example.com', 'User', 'IMIS Office', 'Active'),
+_buildUserTableRow('003', 'Mike Johnson', 'mike@example.com', 'Admin', 'SAO', 'Inactive'),
+_buildUserTableRow('004', 'Sarah Williams', 'sarah@example.com', 'User', 'MCC', 'Active'),
+_buildUserTableRow('005', 'Robert Brown', 'robert@example.com', 'User', 'PETRU', 'Active'),
+_buildUserTableRow('006', 'Emily Davis', 'emily@example.com', 'User', 'Registrar', 'Active'),
+_buildUserTableRow('007', 'Daniel Wilson', 'daniel@example.com', 'User', 'Library', 'Inactive'),
+_buildUserTableRow('008', 'Sophia Martinez', 'sophia@example.com', 'Examiner', 'Guidance', 'Active'),
+_buildUserTableRow('009', 'James Anderson', 'james@example.com', 'User', 'Cashier', 'Active'),
+_buildUserTableRow('010', 'Olivia Taylor', 'olivia@example.com', 'Admin', 'Accounting', 'Active'),
                   ],
                 ),
               ),
@@ -221,14 +234,21 @@ class _SuperAdminState extends State<SuperAdmin> {
     String name,
     String email,
     String role,
+    String office,
     String status,
   ) {
     return DataRow(
+      onSelectChanged: (selected) {
+        if (selected == true) {
+          _showUserDetailsModal(id, name, email, role, office, status);
+        }
+      },
       cells: [
         DataCell(Text(id)),
         DataCell(Text(name)),
         DataCell(Text(email)),
         DataCell(Text(role)),
+        DataCell(Text(office)),
         DataCell(
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -249,6 +269,14 @@ class _SuperAdminState extends State<SuperAdmin> {
         DataCell(
           Row(
             children: [
+              IconButton(
+                icon: const Icon(Icons.visibility, size: 18),
+                onPressed: () {
+                  _showUserDetailsModal(id, name, email, role, office, status);
+                },
+                color: Colors.green,
+                tooltip: 'View',
+              ),
               IconButton(
                 icon: const Icon(Icons.edit, size: 18),
                 onPressed: () {},
@@ -284,7 +312,9 @@ class _SuperAdminState extends State<SuperAdmin> {
                 ),
               ),
               ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  _showAddOfficeModal();
+                },
                 icon: const Icon(Icons.add),
                 label: const Text('Add Office'),
                 style: ElevatedButton.styleFrom(
@@ -329,7 +359,222 @@ class _SuperAdminState extends State<SuperAdmin> {
     );
   }
 
+  Widget _buildSettings() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Settings',
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 32),
+            // General Settings
+            _buildSettingsCard(
+              title: 'General Settings',
+              icon: Icons.settings,
+              color: Colors.blue,
+              children: [
+                _buildSettingsItem(
+                  label: 'Application Name',
+                  value: 'Quiz Management System',
+                  icon: Icons.app_settings_alt,
+                ),
+                const Divider(),
+                _buildSettingsItem(
+                  label: 'Version',
+                  value: '1.0.0',
+                  icon: Icons.info,
+                ),
+                const Divider(),
+                _buildSettingsItem(
+                  label: 'Last Updated',
+                  value: 'May 21, 2026',
+                  icon: Icons.update,
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            // Security Settings
+            _buildSettingsCard(
+              title: 'Security Settings',
+              icon: Icons.security,
+              color: Colors.red,
+              children: [
+                _buildSettingsItemWithButton(
+                  label: 'Change Admin Password',
+                  icon: Icons.lock,
+                  buttonLabel: 'Change',
+                  onPressed: () {
+                    _showChangePasswordModal();
+                  },
+                ),
+                const Divider(),
+                _buildSettingsItemWithButton(
+                  label: 'Two-Factor Authentication',
+                  icon: Icons.verified_user,
+                  buttonLabel: 'Enable',
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            // System Settings
+            _buildSettingsCard(
+              title: 'System Settings',
+              icon: Icons.tune,
+              color: Colors.orange,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.notifications, color: Colors.orange),
+                        const SizedBox(width: 12),
+                        const Text('Enable Notifications'),
+                      ],
+                    ),
+                    Switch(
+                      value: notificationsEnabled,
+                      onChanged: (value) {
+                        setState(() {
+                          notificationsEnabled = value;
+                        });
+                      },
+                      activeColor: kGreen,
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.construction, color: Colors.orange),
+                        const SizedBox(width: 12),
+                        const Text('Maintenance Mode'),
+                      ],
+                    ),
+                    Switch(
+                      value: maintenanceMode,
+                      onChanged: (value) {
+                        setState(() {
+                          maintenanceMode = value;
+                        });
+                      },
+                      activeColor: Colors.red,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            // Database Settings
+            _buildSettingsCard(
+              title: 'Database & Backup',
+              icon: Icons.storage,
+              color: Colors.green,
+              children: [
+                _buildSettingsItemWithButton(
+                  label: 'Backup Database',
+                  icon: Icons.backup,
+                  buttonLabel: 'Backup',
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Backup started...'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                  },
+                ),
+                const Divider(),
+                _buildSettingsItemWithButton(
+                  label: 'Last Backup',
+                  value: 'May 20, 2026 - 10:30 PM',
+                  icon: Icons.history,
+                  buttonLabel: 'View',
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            // About
+            _buildSettingsCard(
+              title: 'About',
+              icon: Icons.info_outline,
+              color: Colors.purple,
+              children: [
+                _buildSettingsItem(
+                  label: 'Organization',
+                  value: 'BRGHGMC',
+                  icon: Icons.business,
+                ),
+                const Divider(),
+                _buildSettingsItem(
+                  label: 'Support Email',
+                  value: 'support@brghgmc.com',
+                  icon: Icons.email,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildOfficeCategory(String categoryName, Color categoryColor, List<Map<String, String>> offices) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: categoryColor.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: categoryColor, width: 2),
+          ),
+          child: Text(
+            categoryName,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: categoryColor,
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1.2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+          ),
+          itemCount: offices.length,
+          itemBuilder: (context, index) {
+            return _buildOfficeCard(
+              offices[index]['name']!,
+              offices[index]['location']!,
+              offices[index]['staff']!,
+              categoryColor,
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+Widget _buildSettingsCategory(String categoryName, Color categoryColor, List<Map<String, String>> offices) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -466,6 +711,121 @@ class _SuperAdminState extends State<SuperAdmin> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showUserDetailsModal(String id, String name, String email, String role, String office, String status) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('User Details'),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 400,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.grey[300]!),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildDetailRow('User ID', id),
+                      const SizedBox(height: 12),
+                      _buildDetailRow('Full Name', name),
+                      const SizedBox(height: 12),
+                      _buildDetailRow('Email', email),
+                      const SizedBox(height: 12),
+                      _buildDetailRow('Role', role),
+                      const SizedBox(height: 12),
+                      _buildDetailRow('Office', office),
+                      const SizedBox(height: 12),
+                      _buildDetailRow('Status', status, 
+                        statusColor: status == 'Active' ? Colors.green : Colors.red),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                // Edit user logic
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(Icons.edit),
+              label: const Text('Edit User'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value, {Color? statusColor}) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 100,
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        Expanded(
+          child: statusColor != null
+              ? Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: statusColor.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                      color: statusColor,
+                    ),
+                  ),
+                )
+              : Text(
+                  value,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13,
+                  ),
+                ),
+        ),
+      ],
     );
   }
 
@@ -649,6 +1009,394 @@ class _SuperAdminState extends State<SuperAdmin> {
       default:
         return 'Super Admin';
     }
+  }
+
+  Widget _buildSettingsCard({
+    required String title,
+    required IconData icon,
+    required Color color,
+    required List<Widget> children,
+  }) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border(
+            left: BorderSide(color: color, width: 4),
+          ),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: color, size: 24),
+                const SizedBox(width: 12),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            ...children,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSettingsItem({
+    required String label,
+    String? value,
+    required IconData icon,
+  }) {
+    return Row(
+      children: [
+        Icon(icon, size: 20, color: Colors.grey[600]),
+        const SizedBox(width: 12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(color: Colors.grey[600], fontSize: 12),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              value ?? 'N/A',
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSettingsItemWithButton({
+    required String label,
+    String? value,
+    required IconData icon,
+    required String buttonLabel,
+    required VoidCallback onPressed,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, size: 20, color: Colors.grey[600]),
+                const SizedBox(width: 12),
+                Text(
+                  label,
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            if (value != null) ...[
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              ),
+            ]
+          ],
+        ),
+        ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kGreen,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          ),
+          child: Text(buttonLabel),
+        ),
+      ],
+    );
+  }
+
+  void _showAddUserModal() {
+    final nameController = TextEditingController();
+    final emailController = TextEditingController();
+    final roleController = TextEditingController();
+    final officeController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add New User'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Full Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    prefixIcon: const Icon(Icons.person),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email Address',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    prefixIcon: const Icon(Icons.email),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: roleController,
+                  decoration: InputDecoration(
+                    labelText: 'Role',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    prefixIcon: const Icon(Icons.assignment),
+                    hintText: 'e.g., Admin, User, Examiner',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: officeController,
+                  decoration: InputDecoration(
+                    labelText: 'Office',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    prefixIcon: const Icon(Icons.location_city),
+                    hintText: 'e.g., Sanitary, IMIS Office',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                if (nameController.text.isEmpty ||
+                    emailController.text.isEmpty ||
+                    roleController.text.isEmpty ||
+                    officeController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please fill in all fields'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        'User "${nameController.text}" added successfully'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.add),
+              label: const Text('Add User'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kGreen,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showAddOfficeModal() {
+    final nameController = TextEditingController();
+    final locationController = TextEditingController();
+    final staffController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add New Office'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Office Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    prefixIcon: const Icon(Icons.location_city),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: locationController,
+                  decoration: InputDecoration(
+                    labelText: 'Location',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    prefixIcon: const Icon(Icons.location_on),
+                    hintText: 'e.g., Building A, Ground Floor',
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: staffController,
+                  decoration: InputDecoration(
+                    labelText: 'Number of Staff',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    prefixIcon: const Icon(Icons.people),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                if (nameController.text.isEmpty ||
+                    locationController.text.isEmpty ||
+                    staffController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please fill in all fields'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                  return;
+                }
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        'Office "${nameController.text}" added successfully'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.add),
+              label: const Text('Add Office'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kGreen,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showChangePasswordModal() {
+    final oldPasswordController = TextEditingController();
+    final newPasswordController = TextEditingController();
+    final confirmPasswordController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: oldPasswordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Current Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  prefixIcon: const Icon(Icons.lock),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: newPasswordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'New Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  prefixIcon: const Icon(Icons.lock_outline),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: confirmPasswordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  prefixIcon: const Icon(Icons.lock_outline),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Password changed successfully'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kGreen,
+              ),
+              child: const Text('Update'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
