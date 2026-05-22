@@ -513,13 +513,13 @@ _buildUserTableRow('010', 'Olivia Taylor', 'olivia@example.com', 'Admin', 'Accou
               children: [
                 _buildSettingsItem(
                   label: 'Organization',
-                  value: 'BRGHGMC',
+                  value: 'BICOL REGION GENERAL HOSPITAL AND GERIATRIC MEDICAL CENTER',
                   icon: Icons.business,
                 ),
                 const Divider(),
                 _buildSettingsItem(
                   label: 'Support Email',
-                  value: 'support@brghgmc.com',
+                  value: 'PETRU@brghgmc.com',
                   icon: Icons.email,
                 ),
               ],
