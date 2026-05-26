@@ -573,7 +573,6 @@ _buildUserTableRow('010', 'Olivia Taylor', 'olivia@example.com', 'Admin', 'Accou
       ],
     );
   }
-
 Widget _buildSettingsCategory(String categoryName, Color categoryColor, List<Map<String, String>> offices) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -907,15 +906,11 @@ Widget _buildSettingsCategory(String categoryName, Color categoryColor, List<Map
       },
     );
   }
-
-
-
-
   Widget _buildAnalyticsCard({
     required String title,
     required String number,
     required IconData icon,
-    required Color color,
+    required Color color, 
   }) {
     return Card(
       elevation: 4,

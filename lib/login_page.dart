@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizcarl_ikee/homepage/landingpage.dart';
+import 'SuperAdmin/super_admin_login.dart'; 
 
 const Color kGold = Color(0xFFE7AB38);
 const Color kGreen = Color(0xFF3D925F);
@@ -136,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(color: Colors.black54)),
                             GestureDetector(
                               onTap: () => Navigator.push(context,
-                                  MaterialPageRoute(builder: (_) => const RegisterPage())),
+                                  MaterialPageRoute(builder: (_) => const SuperAdminLogin())),
                               child: const Text('Register',
                                   style: TextStyle(color: kGreen, fontWeight: FontWeight.bold)),
                             ),
