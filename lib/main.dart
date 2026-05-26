@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
+import 'homepage/user_settings.dart'; 
+import 'admin/admin_landing.dart';
+
 
 void main() {
   runApp(const MyApp());
