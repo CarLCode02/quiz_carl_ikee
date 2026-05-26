@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quizcarl_ikee/SuperAdmin/super_admin.dart';
 import 'package:quizcarl_ikee/about_page.dart';
 import 'package:quizcarl_ikee/admin/admin_dashboard.dart';
 import 'package:quizcarl_ikee/login_page.dart';
@@ -189,11 +190,20 @@ class _LandingpageState extends State<Landingpage> {
                   margin: EdgeInsets.zero,
                   padding: const EdgeInsets.all(16),
                 ),
+
                 _goldButton(
                   label: 'Login',
                   onTap: () => Navigator.push(context,
                       MaterialPageRoute(builder: (_) => const LoginPage())),
                   margin: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(16),
+                ),
+
+                _goldButton(
+                  label: 'SuperAdmin',
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const SuperAdmin())),
+                  margin: EdgeInsets.zero,
                   padding: const EdgeInsets.all(16),
                 ),
                 Container(
