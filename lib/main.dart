@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:quizcarl_ikee/homepage/landingpage.dart';
 import 'login_page.dart';
 import 'homepage/user_settings.dart'; 
-import 'admin/admin_landing.dart';
+
 
 
 void main() {
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        home: const LoginPage(),
+        home: const Landingpage(),
       ),
     );
   }

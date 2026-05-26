@@ -3,7 +3,6 @@ import 'package:quizcarl_ikee/login_page.dart';
 import 'pages/dashboard_page.dart';
 import 'pages/examination_management_page.dart';
 import 'pages/user_management_page.dart';
-import 'pages/office_management_page.dart';
 import 'pages/settings_page.dart';
 import 'admin_profile_page.dart';
 
@@ -24,7 +23,6 @@ const navItems = [
   NavItem(Icons.dashboard_rounded,        'Dashboard'),
   NavItem(Icons.quiz_rounded,             'Examination Management'),
   NavItem(Icons.people_rounded,           'User Management'),
-  NavItem(Icons.business_rounded,         'Office Management'),
   NavItem(Icons.settings_rounded,         'Settings'),
 ];
 
@@ -44,7 +42,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
     DashboardPage(),
     ExaminationManagementPage(),
     UserManagementPage(),
-    OfficeManagementPage(),
     AdminSettingsPage(),
   ];
 

@@ -109,7 +109,7 @@ class _LandingpageState extends State<Landingpage> {
                           _goldButton(
                             label: "I'm a Examinee",
                             onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const QuizListPage())),
+                      MaterialPageRoute(builder: (_) => const LoginPage())),
                             margin: EdgeInsets.all(isPhone ? 10 : 20),
                             padding: EdgeInsets.all(isPhone ? 12 : 16),
                           ),
@@ -138,7 +138,7 @@ class _LandingpageState extends State<Landingpage> {
   // Nav bar 
 
   Widget _buildNav(BuildContext context, double w, bool isPhone) {
-    // logo shrink para amg kasya nava bars
+    // logo shrink to be compatible in nava bars
     final logoSize = w < 1000 ? 64.0 : 95.0;
 
     return Container(
