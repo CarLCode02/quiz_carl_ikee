@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quizcarl_ikee/login_page.dart';
 import 'package:quizcarl_ikee/quiz_list_page.dart';
 import 'homepage/user_settings.dart';
+import 'homepage/score_dashboard_page.dart';
 import 'about_page.dart';
 
 
@@ -300,6 +301,16 @@ class _LandscapeLayout extends StatelessWidget {
                           child: Column(
                             children: [
                               _MenuTile(
+                                icon: Icons.emoji_events_outlined,
+                                label: 'Score Dashboard',
+                                subtitle: 'View your quiz scores',
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const ScoreDashboardPage())),
+                              ),
+                              const Divider(height: 1, thickness: 0.8),
+                              _MenuTile(
                                 icon: Icons.history_rounded,
                                 label: 'Quiz History',
                                 subtitle: 'View your past quizzes',
@@ -345,10 +356,11 @@ class _LandscapeLayout extends StatelessWidget {
                             subtitle: 'Sign out of your account',
                             iconColor: Colors.red.shade400,
                             labelColor: Colors.red.shade400,
-                            onTap: () => Navigator.push(
+                            onTap: () => Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => const LoginPage())),
+                                    builder: (_) => const LoginPage()),
+                                (route) => false),
                             showArrow: false,
                           ),
                         ),
@@ -540,6 +552,14 @@ class _ProfileCards extends StatelessWidget {
           child: Column(
             children: [
               _MenuTile(
+                icon: Icons.emoji_events_outlined,
+                label: 'Score Dashboard',
+                subtitle: 'View your quiz scores',
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const ScoreDashboardPage())),
+              ),
+              const Divider(height: 1, thickness: 0.8),
+              _MenuTile(
                 icon: Icons.history_rounded,
                 label: 'Quiz History',
                 subtitle: 'View your past quizzes',
@@ -581,8 +601,9 @@ class _ProfileCards extends StatelessWidget {
             subtitle: 'Sign out of your account',
             iconColor: Colors.red.shade400,
             labelColor: Colors.red.shade400,
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const LoginPage())),
+            onTap: () => Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (_) => const LoginPage()),
+                (route) => false),
             showArrow: false,
           ),
         ),

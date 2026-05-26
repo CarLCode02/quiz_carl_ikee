@@ -426,7 +426,7 @@ class _AppInfoCard extends StatelessWidget {
               value: 'Flutter 3.x  •  Dart 3.x'),
           Divider(height: 20, thickness: 0.6),
           _InfoRow(
-              icon: Icons.gavel_outlined, label: 'License', value: 'MIT'),
+              icon: Icons.gavel_outlined, label: 'License', value: 'IT'),
           Divider(height: 20, thickness: 0.6),
           _InfoRow(
               icon: Icons.business_outlined,

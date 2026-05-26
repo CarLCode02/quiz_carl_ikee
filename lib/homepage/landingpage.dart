@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizcarl_ikee/about_page.dart';
+import 'package:quizcarl_ikee/admin/admin_dashboard.dart';
 import 'package:quizcarl_ikee/login_page.dart';
 import 'package:quizcarl_ikee/profile_page.dart';
+import 'package:quizcarl_ikee/quiz_list_page.dart';
 
 const Color kGold = Color(0xFFE7AB38);
 const Color kGreen = Color(0xFF3D925F);
@@ -106,13 +108,15 @@ class _LandingpageState extends State<Landingpage> {
                         children: [
                           _goldButton(
                             label: "I'm a Examinee",
-                            onTap: () {},
+                            onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const QuizListPage())),
                             margin: EdgeInsets.all(isPhone ? 10 : 20),
                             padding: EdgeInsets.all(isPhone ? 12 : 16),
                           ),
                           _goldButton(
                             label: "I'm a Test Administrator",
-                            onTap: () {},
+                             onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const AdminDashboard())),
                             margin: EdgeInsets.all(isPhone ? 10 : 20),
                             padding: EdgeInsets.all(isPhone ? 12 : 16),
                           ),
@@ -159,21 +163,12 @@ class _LandingpageState extends State<Landingpage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _navText('GreenCross'),
-                  _navText('Hospital Essentials'),
-                  _navText('Midterm Exam'),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8)),
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const AboutPage())),
-                    child: const Text('About',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
-                  ),
+                  _navButton(context, 'Quizes', () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const QuizListPage()))),
+                  _navButton(context, 'Profile', () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const ProfilePage()))),
+                  _navButton(context, 'About', () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const AboutPage()))),
                 ],
               ),
             ),
@@ -218,9 +213,11 @@ class _LandingpageState extends State<Landingpage> {
     );
   }
 
-  Widget _navText(String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+  Widget _navButton(BuildContext context, String label, VoidCallback onTap) {
+    return TextButton(
+      style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8)),
+      onPressed: onTap,
       child: Text(label,
           style: const TextStyle(
               fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
@@ -272,10 +269,11 @@ class _MobileDrawer extends StatelessWidget {
                       size: 48)),
             ),
             const Divider(color: Colors.white24),
-            _tile(context, 'GreenCross', Icons.eco_outlined, () {}),
-            _tile(context, 'Hospital Essentials',
-                Icons.medical_services_outlined, () {}),
-            _tile(context, 'Midterm Exam', Icons.quiz_outlined, () {}),
+            _tile(context, 'Quizes', Icons.eco_outlined, () {
+              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const QuizListPage()));
+            }),
             _tile(context, 'About', Icons.info_outline_rounded, () {
               Navigator.pop(context);
               Navigator.push(context,

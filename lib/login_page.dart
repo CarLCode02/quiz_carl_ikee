@@ -206,25 +206,22 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             SizedBox(
               height: 52,
               child: ElevatedButton(
-
-                 style: ElevatedButton.styleFrom(
-                          
-                          side: BorderSide(color: Colors.green.shade700),
-                          backgroundColor: kGreen,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                        ),
-                 onPressed: () {
-                  Navigator.push(
+                style: ElevatedButton.styleFrom(
+                  side: BorderSide(color: Colors.green.shade700),
+                  backgroundColor: kGreen,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const Landingpage(),
                     ),
                   );
                 },
-                
-                child: const Text('Login ', style: TextStyle(color: Colors.white),),
+                child: const Text('Login', style: TextStyle(color: Colors.white)),
               ),
             ),
             const SizedBox(height: 24),
@@ -251,15 +248,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 GestureDetector(
                   onTap: () => Navigator.push(
                     context,
-                    PageRouteBuilder(
-                      transitionDuration: const Duration(milliseconds: 450),
-                      pageBuilder: (_, __, ___) => const RegisterPage(),
-                      transitionsBuilder: (_, anim, __, child) => SlideTransition(
-                        position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-                            .animate(CurvedAnimation(parent: anim, curve: Curves.easeOutCubic)),
-                        child: child,
-                      ),
-                    ),
+                    MaterialPageRoute(builder: (_) => const RegisterPage()),
                   ),
                   child: const Text('Register',
                       style: TextStyle(
@@ -312,7 +301,6 @@ class _RegisterPageState extends State<RegisterPage> with TickerProviderStateMix
   final _confirm = TextEditingController();
   bool _obscurePass = true;
   bool _obscureConfirm = true;
-  bool _isLoading = false;
 
   late final AnimationController _entryCtrl;
   late final Animation<double> _fadeAnim;
@@ -344,40 +332,6 @@ class _RegisterPageState extends State<RegisterPage> with TickerProviderStateMix
     _password.dispose();
     _confirm.dispose();
     super.dispose();
-  }
-
-  Future<void> _register() async {
-    if (!_formKey.currentState!.validate()) return;
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 1400));
-    if (!mounted) return;
-    setState(() => _isLoading = false);
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      backgroundColor: kGreen,
-      content: const Row(children: [
-        Icon(Icons.check_circle_outline_rounded, color: Colors.white, size: 20),
-        SizedBox(width: 10),
-        Text('Account created! Please login.',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
-      ]),
-    ));
-
-    Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 450),
-        pageBuilder: (_, __, ___) => const LoginPage(),
-        transitionsBuilder: (_, anim, __, child) => SlideTransition(
-          position: Tween<Offset>(begin: const Offset(-1, 0), end: Offset.zero)
-              .animate(CurvedAnimation(parent: anim, curve: Curves.easeOutCubic)),
-          child: child,
-        ),
-      ),
-    );
   }
 
   @override
@@ -553,21 +507,20 @@ class _RegisterPageState extends State<RegisterPage> with TickerProviderStateMix
             SizedBox(
               height: 52,
               child: ElevatedButton(
-                onPressed: _isLoading ? null : _register,
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const Landingpage()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: kGreen,
-                  disabledBackgroundColor: kGreen.withOpacity(0.7),
                   foregroundColor: Colors.white,
                   elevation: 0,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                 ),
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 22,
-                        height: 22,
-                        child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
-                    : const Text('Create Account'),
+                child: const Text('Create Account'),
               ),
             ),
             const SizedBox(height: 20),
