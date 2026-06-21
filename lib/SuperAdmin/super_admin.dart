@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:quizcarl_ikee/login_page.dart';
 
 const Color kGreen = Color.fromARGB(255, 76, 175, 80);
+const Color kGreenDark = Color(0xFF2A6B43);
+
+const _navItems = <({String label, IconData icon})>[
+  (label: 'Dashboard', icon: Icons.dashboard_rounded),
+  (label: 'Users Management', icon: Icons.people_rounded),
+  (label: 'Office Management', icon: Icons.business_rounded),
+  (label: 'Settings', icon: Icons.settings_rounded),
+];
 
 class SuperAdmin extends StatefulWidget {
   const SuperAdmin({super.key});
@@ -14,53 +23,82 @@ class _SuperAdminState extends State<SuperAdmin> {
   bool notificationsEnabled = true;
   bool maintenanceMode = false;
 
+  void _logout() {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const LoginPage()),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final isWide = width >= 900;
+
     return Scaffold(
-      body: Row(
+      backgroundColor: Colors.grey[100],
+      drawer: isWide ? null : _buildDrawer(),
+      body: Column(
         children: [
-          // Side Navigation
-          Container(
-            width: 250,
-            decoration: BoxDecoration(
-              color: kGreen,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 8,
-                  offset: const Offset(2, 0),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  //child:Text('SUPER ADMIN'), 
-                ), 
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Image.asset('assets/BRGHGMC.png', height: 80, width: 80),
-                ),
-                const Divider(color: Colors.white30),
-                _buildNavItem('Dashboard', 0, Icons.dashboard),
-                _buildNavItem('Users Management', 1, Icons.people),
-                _buildNavItem('Office Management', 2, Icons.assessment),
-                _buildNavItem('Settings', 3, Icons.settings),
-               // _buildNavItem('User View', 3, Icons.user),
-                _buildNavItem('Logout', 4, Icons.logout),
-                const Spacer(),
-              ],
-            ),
+          _SuperAdminHeader(
+            isWide: isWide,
+            pageTitle: _navItems[_selectedIndex].label,
           ),
-          // 
           Expanded(
-            child: Container(
-              color: Colors.grey[100],
-              child: _buildContentArea(_selectedIndex),
-            ),
+            child: isWide
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _SuperAdminSideNav(
+                        selectedIndex: _selectedIndex,
+                        onSelect: (i) => setState(() => _selectedIndex = i),
+                        onLogout: _logout,
+                      ),
+                      Expanded(child: _buildContentArea(_selectedIndex)),
+                    ],
+                  )
+                : _buildContentArea(_selectedIndex),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDrawer() {
+    return Drawer(
+      backgroundColor: kGreenDark,
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const _SuperAdminDrawerHeader(),
+            const Divider(color: Colors.white24),
+            ...List.generate(_navItems.length, (i) {
+              return _SuperAdminNavTile(
+                label: _navItems[i].label,
+                icon: _navItems[i].icon,
+                selected: _selectedIndex == i,
+                onTap: () {
+                  setState(() => _selectedIndex = i);
+                  Navigator.pop(context);
+                },
+              );
+            }),
+            const Spacer(),
+            const Divider(color: Colors.white24),
+            _SuperAdminNavTile(
+              label: 'Logout',
+              icon: Icons.logout_rounded,
+              selected: false,
+              isLogout: true,
+              onTap: () {
+                Navigator.pop(context);
+                _logout();
+              },
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
     );
   }
@@ -84,100 +122,119 @@ class _SuperAdminState extends State<SuperAdmin> {
   }
 
   Widget _buildDashboard() {
-    return Container(
-      padding: const EdgeInsets.all(24),
+    final pad = _pagePadding(context);
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(pad),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Dashboard',
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 24),
           Text(
             'Analytics',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-          const SizedBox(height: 24),
-          Row(
-            children: [
-              Expanded(
-                child: _buildAnalyticsCard(
+          const SizedBox(height: 20),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final cols = constraints.maxWidth > 1100
+                  ? 4
+                  : constraints.maxWidth > 700
+                      ? 2
+                      : 1;
+              final cards = [
+                _buildAnalyticsCard(
                   title: 'Total Users',
                   number: '1,234',
                   icon: Icons.people,
                   color: Colors.blue,
                 ),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: _buildAnalyticsCard(
+                _buildAnalyticsCard(
                   title: 'Total Quizzes',
                   number: '45',
                   icon: Icons.quiz,
                   color: Colors.orange,
                 ),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: _buildAnalyticsCard(
+                _buildAnalyticsCard(
                   title: 'Total Examiners',
                   number: '28',
                   icon: Icons.person_add,
                   color: Colors.purple,
                 ),
-
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: _buildAnalyticsCard(
+                _buildAnalyticsCard(
                   title: 'Total Offices',
                   number: '28',
                   icon: Icons.work,
                   color: const Color.fromARGB(255, 39, 176, 92),
                 ),
-
-              ),
-              
-            ],
+              ];
+              return GridView.count(
+                crossAxisCount: cols,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: cols == 1 ? 2.4 : 1.35,
+                children: cards,
+              );
+            },
           ),
         ],
-
       ),
     );
   }
 
+  double _pagePadding(BuildContext context) {
+    final w = MediaQuery.sizeOf(context).width;
+    if (w >= 1200) return 28;
+    if (w >= 600) return 20;
+    return 14;
+  }
+
   Widget _buildUsersManagement() {
-    return Container(
-      padding: const EdgeInsets.all(24),
+    final pad = _pagePadding(context);
+    return Padding(
+      padding: EdgeInsets.all(pad),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final stacked = constraints.maxWidth < 520;
+              final title = Text(
                 'Users Management',
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              ElevatedButton.icon(
-                onPressed: () {
-                  _showAddUserModal();
-                },
+                      fontWeight: FontWeight.bold,
+                    ),
+              );
+              final addBtn = ElevatedButton.icon(
+                onPressed: _showAddUserModal,
                 icon: const Icon(Icons.add),
                 label: const Text('Add User'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: kGreen,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
-              ),
-            ],
+              );
+              if (stacked) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [title, const SizedBox(height: 12), addBtn],
+                );
+              }
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Expanded(child: title), addBtn],
+              );
+            },
           ),
           const SizedBox(height: 24),
           TextField(
@@ -297,32 +354,42 @@ _buildUserTableRow('010', 'Olivia Taylor', 'olivia@example.com', 'Admin', 'Accou
   }
 
   Widget _buildOfficeManagement() {
-    return Container(
-      padding: const EdgeInsets.all(24),
+    final pad = _pagePadding(context);
+    return Padding(
+      padding: EdgeInsets.all(pad),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final stacked = constraints.maxWidth < 520;
+              final title = Text(
                 'Office Management',
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              ElevatedButton.icon(
-                onPressed: () {
-                  _showAddOfficeModal();
-                },
+                      fontWeight: FontWeight.bold,
+                    ),
+              );
+              final addBtn = ElevatedButton.icon(
+                onPressed: _showAddOfficeModal,
                 icon: const Icon(Icons.add),
                 label: const Text('Add Office'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: kGreen,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
-              ),
-            ],
+              );
+              if (stacked) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [title, const SizedBox(height: 12), addBtn],
+                );
+              }
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Expanded(child: title), addBtn],
+              );
+            },
           ),
           const SizedBox(height: 32),
           Expanded(
@@ -360,9 +427,9 @@ _buildUserTableRow('010', 'Olivia Taylor', 'olivia@example.com', 'Admin', 'Accou
   }
 
   Widget _buildSettings() {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      child: SingleChildScrollView(
+    final pad = _pagePadding(context);
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(pad),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -526,7 +593,6 @@ _buildUserTableRow('010', 'Olivia Taylor', 'olivia@example.com', 'Admin', 'Accou
             ),
           ],
         ),
-      ),
     );
   }
 
@@ -551,22 +617,31 @@ _buildUserTableRow('010', 'Olivia Taylor', 'olivia@example.com', 'Admin', 'Accou
           ),
         ),
         const SizedBox(height: 16),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1.2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-          ),
-          itemCount: offices.length,
-          itemBuilder: (context, index) {
-            return _buildOfficeCard(
-              offices[index]['name']!,
-              offices[index]['location']!,
-              offices[index]['staff']!,
-              categoryColor,
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final cols = constraints.maxWidth > 900
+                ? 3
+                : constraints.maxWidth > 560
+                    ? 2
+                    : 1;
+            return GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: cols,
+                childAspectRatio: cols == 1 ? 1.5 : 1.2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+              ),
+              itemCount: offices.length,
+              itemBuilder: (context, index) {
+                return _buildOfficeCard(
+                  offices[index]['name']!,
+                  offices[index]['location']!,
+                  offices[index]['staff']!,
+                  categoryColor,
+                );
+              },
             );
           },
         ),
@@ -952,38 +1027,6 @@ Widget _buildSettingsCategory(String categoryName, Color categoryColor, List<Map
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(String label, int index, IconData icon) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        hoverColor: Colors.green[700],
-        child: Container(
-          color: _selectedIndex == index ? Colors.green[800] : Colors.transparent,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
-            children: [
-              Icon(icon, color: Colors.white, size: 24),
-              const SizedBox(width: 12),
-              Text(
-                label,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: _selectedIndex == index ? FontWeight.bold : FontWeight.normal,
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
@@ -1395,3 +1438,255 @@ Widget _buildSettingsCategory(String categoryName, Color categoryColor, List<Map
   }
 }
 
+// ── Responsive shell widgets ──────────────────────────────────────────────────
+
+class _SuperAdminHeader extends StatelessWidget {
+  final bool isWide;
+  final String pageTitle;
+
+  const _SuperAdminHeader({required this.isWide, required this.pageTitle});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [kGreenDark, kGreen],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: SizedBox(
+          height: 64,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: isWide ? 20 : 8),
+            child: Row(
+              children: [
+                if (!isWide)
+                  Builder(
+                    builder: (ctx) => IconButton(
+                      icon: const Icon(Icons.menu_rounded,
+                          color: Colors.white, size: 26),
+                      onPressed: () => Scaffold.of(ctx).openDrawer(),
+                    ),
+                  ),
+                Image.asset(
+                  'assets/BRGHGMC.png',
+                  height: 36,
+                  width: 36,
+                  errorBuilder: (_, __, ___) => const Icon(
+                    Icons.local_hospital_rounded,
+                    color: Colors.white,
+                    size: 32,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        isWide ? 'BRGHGMC Super Admin' : 'Super Admin',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 15,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        pageTitle,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 11,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SuperAdminSideNav extends StatelessWidget {
+  final int selectedIndex;
+  final ValueChanged<int> onSelect;
+  final VoidCallback onLogout;
+
+  const _SuperAdminSideNav({
+    required this.selectedIndex,
+    required this.onSelect,
+    required this.onLogout,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 240,
+      decoration: BoxDecoration(
+        color: kGreen,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.12),
+            blurRadius: 8,
+            offset: const Offset(2, 0),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Image.asset(
+              'assets/BRGHGMC.png',
+              height: 72,
+              width: 72,
+              errorBuilder: (_, __, ___) => const Icon(
+                Icons.admin_panel_settings,
+                color: Colors.white,
+                size: 56,
+              ),
+            ),
+          ),
+          const Divider(color: Colors.white30),
+          const SizedBox(height: 8),
+          ...List.generate(_navItems.length, (i) {
+            return _SuperAdminNavTile(
+              label: _navItems[i].label,
+              icon: _navItems[i].icon,
+              selected: selectedIndex == i,
+              onTap: () => onSelect(i),
+            );
+          }),
+          const Spacer(),
+          const Divider(color: Colors.white30),
+          _SuperAdminNavTile(
+            label: 'Logout',
+            icon: Icons.logout_rounded,
+            selected: false,
+            isLogout: true,
+            onTap: onLogout,
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+}
+
+class _SuperAdminDrawerHeader extends StatelessWidget {
+  const _SuperAdminDrawerHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.all(20),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 22,
+            backgroundColor: kGreen,
+            child: Icon(Icons.admin_panel_settings,
+                color: Colors.white, size: 24),
+          ),
+          SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Super Admin',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14)),
+                Text('BRGHGMC',
+                    style: TextStyle(color: Colors.white60, fontSize: 12)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SuperAdminNavTile extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool selected;
+  final VoidCallback onTap;
+  final bool isLogout;
+
+  const _SuperAdminNavTile({
+    required this.label,
+    required this.icon,
+    required this.selected,
+    required this.onTap,
+    this.isLogout = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isLogout
+        ? Colors.red.shade300
+        : selected
+            ? Colors.white
+            : Colors.white70;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(10),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            decoration: BoxDecoration(
+              color: selected
+                  ? Colors.white.withOpacity(0.15)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              children: [
+                Icon(icon, color: color, size: 20),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 14,
+                      fontWeight:
+                          selected ? FontWeight.w700 : FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
